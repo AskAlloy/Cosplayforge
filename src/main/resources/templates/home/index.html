@@ -181,7 +181,7 @@ $('#fLog').onsubmit = async e => {
 /* ---------- Recursos: o que cada tela lista, edita e quais ações tem ---------- */
 // cols = colunas da tabela | f = campos do formulário [nome, rótulo] (nome com ponto = objeto aninhado)
 // base = URL de escrita | del = permite excluir | unico = o usuário só tem um registro
-// acoes = botões por linha, cada um devolve [método, url, corpo]
+// acoes = botões por linha, cada um devolve [métod, url, corpo]
 const st = (r, s) => ['PUT', '/api/admin/lojas/' + r.id + '/status', { status: s }];
 const RES = {
   categorias: {
