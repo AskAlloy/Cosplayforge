@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Entrar · CosplayForge', 'auth')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: toasts}"></div>
+
+<main class="auth">
+    <aside class="auth-lateral">
+        <a class="cf-marca" th:href="@{/login}"><span class="cf-marca-icone"><i class="bi bi-magic"></i></span>CosplayForge</a>
+        <div>
+            <h1>Cosplay, impressão 3D e cultura gamer num só lugar</h1>
+            <p>Compre peças feitas por quem entende do assunto ou abra a sua própria loja.</p>
+            <ul class="auth-destaques">
+                <li><i class="bi bi-shop"></i>Lojas de artesãos e makers</li>
+                <li><i class="bi bi-box-seam"></i>Peças prontas e sob encomenda</li>
+                <li><i class="bi bi-truck"></i>Envio para todo o Brasil</li>
+            </ul>
+        </div>
+        <small class="text-muted">Projeto acadêmico · ADS</small>
+    </aside>
+
+    <section class="auth-form-area">
+        <form id="formLogin" class="auth-form" novalidate>
+            <h2>Entrar na sua conta</h2>
+            <p class="text-muted mb-4">Use seu e-mail ou nome de usuário.</p>
+
+            <div id="sessaoAtiva" class="alert alert-info d-none" role="status">
+                Você já está logado como <strong id="sessaoNome"></strong>.<br>
+                <a id="sessaoContinuar" class="alert-link" href="#">Continuar</a> ·
+                <a id="sessaoSair" class="alert-link" href="#">Entrar com outra conta</a>
+            </div>
+            <div id="aviso" class="alert d-none" role="alert"></div>
+
+            <div class="mb-3">
+                <label for="login" class="form-label">E-mail ou usuário</label>
+                <input id="login" class="form-control" autocomplete="username" required autofocus>
+            </div>
+            <div class="mb-4">
+                <label for="senha" class="form-label">Senha</label>
+                <div class="input-group">
+                    <input id="senha" type="password" class="form-control" autocomplete="current-password" required>
+                    <button type="button" id="verSenha" class="btn btn-outline-secondary" aria-label="Mostrar senha"><i class="bi bi-eye"></i></button>
+                </div>
+            </div>
+            <button class="btn btn-primary w-100" type="submit">Entrar</button>
+            <p class="auth-troca">Ainda não tem conta? <a th:href="@{/cadastro}">Criar conta</a><br>
+                <a th:href="@{/cadastro(confirmar=1)}" class="fw-normal small">Já me cadastrei e preciso confirmar o e-mail</a></p>
+        </form>
+    </section>
+</main>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script th:src="@{/js/login.js}"></script>
+</body>
+</html>

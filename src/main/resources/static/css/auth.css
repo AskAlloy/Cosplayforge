@@ -1,0 +1,41 @@
+/* Telas de login e cadastro: duas colunas no desktop, uma no celular */
+.auth { min-height: 100vh; display: grid; grid-template-columns: 5fr 6fr; }
+
+.auth-lateral {
+    padding: 3rem 3.5rem; display: flex; flex-direction: column; justify-content: space-between;
+    background: linear-gradient(155deg, #E6E4FB 0%, #DDF0F5 55%, #DDF4EE 100%);
+}
+.auth-lateral h1 { font-size: 2.2rem; line-height: 1.2; max-width: 15ch; margin: 0 0 1rem; }
+.auth-lateral p { color: #4B5078; max-width: 38ch; margin: 0; }
+.auth-destaques { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: .9rem; }
+.auth-destaques li { display: flex; align-items: center; gap: .8rem; font-weight: 600; }
+.auth-destaques i {
+    width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center;
+    background: rgba(255, 255, 255, .75); color: var(--cf-primary);
+}
+
+.auth-form-area { display: grid; place-items: center; padding: 2rem 1.25rem; }
+.auth-form { width: 100%; max-width: 420px; }
+.auth-form h2 { font-size: 1.7rem; margin-bottom: .3rem; }
+.auth-form .btn-primary { padding: .7rem; }
+.auth-troca { text-align: center; margin-top: 1.4rem; color: var(--cf-muted); }
+.auth-troca a { font-weight: 700; text-decoration: none; }
+
+@media (max-width: 860px) {
+    .auth { grid-template-columns: 1fr; }
+    .auth-lateral { padding: 1.5rem; gap: 1rem; }
+    .auth-lateral h1 { font-size: 1.5rem; }
+    .auth-destaques { display: none; }
+}
+
+/* Cadastro: formulário mais largo e escolha de perfil em cartões */
+.auth-form.largo { max-width: 560px; }
+.perfil-opcoes { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.perfil-opcoes input { position: absolute; opacity: 0; }
+.perfil-opcoes label {
+    display: block; padding: .8rem 1rem; border: 1.5px solid var(--cf-line); border-radius: 12px;
+    background: var(--cf-surface); cursor: pointer; font-weight: 600; transition: border-color .15s, background .15s;
+}
+.perfil-opcoes label small { display: block; font-weight: 400; color: var(--cf-muted); }
+.perfil-opcoes input:checked + label { border-color: var(--cf-primary); background: var(--cf-primary-soft); }
+.perfil-opcoes input:focus-visible + label { box-shadow: 0 0 0 .22rem rgba(91, 84, 214, .22); }

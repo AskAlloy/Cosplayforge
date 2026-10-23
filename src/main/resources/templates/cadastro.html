@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Criar conta · CosplayForge', 'auth')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: toasts}"></div>
+
+<main class="auth">
+    <aside class="auth-lateral">
+        <a class="cf-marca" th:href="@{/login}"><span class="cf-marca-icone"><i class="bi bi-magic"></i></span>CosplayForge</a>
+        <div>
+            <h1>Crie sua conta em poucos minutos</h1>
+            <p>Depois do cadastro, você confirma o e-mail e já pode entrar.</p>
+            <ul class="auth-destaques">
+                <li><i class="bi bi-bag-heart"></i>Compre de várias lojas</li>
+                <li><i class="bi bi-shop"></i>Ou abra a sua própria loja</li>
+                <li><i class="bi bi-envelope-check"></i>Confirmação por e-mail</li>
+            </ul>
+        </div>
+        <small class="text-muted">Projeto acadêmico · ADS</small>
+    </aside>
+
+    <section class="auth-form-area">
+        <div class="auth-form largo">
+
+            <!-- Etapa 1: dados da conta -->
+            <form id="formCadastro" novalidate>
+                <h2>Criar conta</h2>
+                <p class="text-muted mb-4">Preencha os dados abaixo.</p>
+                <div id="aviso" class="alert d-none" role="alert"></div>
+
+                <div class="mb-3">
+                    <span class="form-label d-block">Como você quer usar o CosplayForge?</span>
+                    <div class="perfil-opcoes">
+                        <div><input type="radio" name="perfil" id="perfilCliente" value="CLIENTE" checked>
+                            <label for="perfilCliente">Quero comprar<small>Conta de cliente</small></label></div>
+                        <div><input type="radio" name="perfil" id="perfilVendedor" value="VENDEDOR">
+                            <label for="perfilVendedor">Quero vender<small>Conta de vendedor, com loja</small></label></div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6"><label for="nome" class="form-label">Nome completo</label><input id="nome" class="form-control" autocomplete="name" maxlength="100" required autofocus></div>
+                    <div class="col-md-6"><label for="nomeUsuario" class="form-label">Nome de usuário</label><input id="nomeUsuario" class="form-control" autocomplete="username" maxlength="40" required></div>
+                    <div class="col-12"><label for="email" class="form-label">E-mail</label><input id="email" type="email" class="form-control" autocomplete="email" required></div>
+                    <div class="col-md-6"><label for="cpf" class="form-label">CPF</label><input id="cpf" class="form-control" inputmode="numeric" maxlength="14" placeholder="000.000.000-00" required></div>
+                    <div class="col-md-6"><label for="telefone" class="form-label">Telefone <span class="text-muted fw-normal">(opcional)</span></label><input id="telefone" class="form-control" inputmode="tel" autocomplete="tel" maxlength="16"></div>
+                    <div class="col-md-6"><label for="senha" class="form-label">Senha</label><input id="senha" type="password" class="form-control" autocomplete="new-password" required><div class="form-text">8 ou mais caracteres, com letra e número.</div></div>
+                    <div class="col-md-6"><label for="confirmarSenha" class="form-label">Repita a senha</label><input id="confirmarSenha" type="password" class="form-control" autocomplete="new-password" required></div>
+                </div>
+                <button class="btn btn-primary w-100 mt-4" type="submit">Criar conta</button>
+            </form>
+
+            <!-- Etapa 2: confirmar o e-mail (o envio é simulado: o link aparece no console do servidor) -->
+            <form id="formConfirmar" class="d-none" novalidate>
+                <h2>Confirme seu e-mail</h2>
+                <p class="text-muted mb-4">Como o envio de e-mail é simulado, copie o link que apareceu no <strong>console do servidor</strong> e cole abaixo. Pode colar só o código também.</p>
+                <div id="avisoConfirmar" class="alert d-none" role="alert"></div>
+                <label for="tokenConfirmar" class="form-label">Link ou código</label>
+                <input id="tokenConfirmar" class="form-control mb-3" required>
+                <button class="btn btn-primary w-100" type="submit">Confirmar e-mail</button>
+            </form>
+
+            <p class="auth-troca">Já tem conta? <a th:href="@{/login}">Entrar</a></p>
+        </div>
+    </section>
+</main>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script th:src="@{/js/cadastro.js}"></script>
+</body>
+</html>

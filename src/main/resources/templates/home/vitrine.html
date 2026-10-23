@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('CosplayForge · Vitrine', 'vitrine')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: toasts}"></div>
+
+<header class="vit-topo">
+    <div class="vit-container vit-topo-linha">
+        <a class="cf-marca" th:href="@{/static}"><span class="cf-marca-icone"><i class="bi bi-magic"></i></span>CosplayForge</a>
+        <div id="areaConta" class="d-flex align-items-center gap-2"></div>
+    </div>
+</header>
+
+<section class="vit-hero">
+    <div class="vit-container">
+        <h1>Cosplay, impressão 3D e cultura gamer</h1>
+        <p>Peças prontas feitas por lojas independentes.</p>
+        <div class="vit-filtros">
+            <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                <input id="busca" class="form-control" placeholder="Buscar produto" aria-label="Buscar produto">
+            </div>
+            <select id="categoria" class="form-select" aria-label="Filtrar por categoria"><option value="">Todas as categorias</option></select>
+        </div>
+    </div>
+</section>
+
+<main class="vit-container vit-principal">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h5 m-0">Produtos</h2><span class="text-muted small" id="contagem"></span>
+    </div>
+    <div id="grade" class="vit-grade" aria-live="polite"></div>
+    <nav id="paginacao" class="d-flex justify-content-center align-items-center gap-3 mt-4" aria-label="Paginação"></nav>
+</main>
+
+<!-- Detalhe do produto -->
+<div class="modal fade" id="modalProduto" tabindex="-1" aria-labelledby="detNome" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+        <div class="modal-header"><h2 class="modal-title h5" id="detNome"></h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button></div>
+        <div class="modal-body">
+            <div class="d-flex flex-wrap gap-2 mb-3" id="detSelos"></div>
+            <p id="detDescricao" class="mb-3"></p>
+            <div class="small text-muted mb-3" id="detMedidas"></div>
+            <div class="d-flex justify-content-between align-items-center">
+                <div><div class="text-muted small">Vendido por</div><div class="fw-semibold" id="detLoja"></div></div>
+                <div class="vit-preco fs-4" id="detPreco"></div>
+            </div>
+        </div>
+    </div></div>
+</div>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script th:src="@{/js/vitrine.js}"></script>
+</body>
+</html>

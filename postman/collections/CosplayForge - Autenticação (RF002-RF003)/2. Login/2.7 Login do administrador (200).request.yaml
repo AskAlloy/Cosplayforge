@@ -1,0 +1,21 @@
+$kind: http-request
+url: "{{baseUrl}}/api/auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "login": "{{adminEmail}}",
+      "senha": "{{adminSenha}}"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status 200', () => pm.response.to.have.status(200));
+      const j = pm.response.json();
+      pm.test('Retorna token Bearer', () => { pm.expect(j.token).to.be.a('string'); pm.expect(j.tipo).to.eql('Bearer'); });
+      pm.collectionVariables.set('tokenAdmin', j.token);
+    language: text/javascript
+order: 7000

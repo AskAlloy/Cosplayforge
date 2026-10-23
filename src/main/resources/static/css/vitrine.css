@@ -1,0 +1,31 @@
+/* Vitrine pública: topo, faixa de busca e grade de produtos */
+.vit-container { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 1.25rem; }
+
+.vit-topo { background: var(--cf-surface); border-bottom: 1px solid var(--cf-line); position: sticky; top: 0; z-index: 20; }
+.vit-topo-linha { display: flex; justify-content: space-between; align-items: center; height: 64px; }
+
+.vit-hero { background: linear-gradient(155deg, #E6E4FB 0%, #DDF0F5 55%, #DDF4EE 100%); padding: 2.2rem 0 2rem; }
+.vit-hero h1 { font-size: clamp(1.6rem, 3.4vw, 2.3rem); margin: 0 0 .4rem; }
+.vit-hero p { color: #4B5078; margin: 0 0 1.3rem; }
+.vit-filtros { display: grid; grid-template-columns: 1fr 240px; gap: .75rem; max-width: 720px; }
+
+.vit-principal { padding-top: 1.8rem; padding-bottom: 3rem; }
+.vit-grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; }
+
+.vit-card {
+    display: flex; flex-direction: column; text-align: left; padding: 0; cursor: pointer; overflow: hidden;
+    background: var(--cf-surface); border: 1px solid var(--cf-line); border-radius: 16px; transition: border-color .15s;
+}
+.vit-card:hover { border-color: var(--cf-primary); }
+.vit-capa { height: 130px; display: grid; place-items: center; font-size: 2.2rem; color: rgba(30, 33, 66, .45); background: var(--capa, #E9E8FB); }
+.vit-info { padding: .9rem 1rem 1rem; display: flex; flex-direction: column; gap: .25rem; flex: 1; }
+.vit-nome { font-family: "Outfit", sans-serif; font-weight: 600; font-size: 1.02rem; margin: 0; color: var(--cf-ink); }
+.vit-loja { color: var(--cf-muted); font-size: .85rem; }
+.vit-rodape { margin-top: auto; padding-top: .6rem; display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
+.vit-preco { font-family: "Outfit", sans-serif; font-weight: 600; color: var(--cf-ink); }
+
+@media (max-width: 600px) { .vit-filtros { grid-template-columns: 1fr; } }
+
+/* Foto do produto por cima do fundo colorido; se a imagem falhar, o fundo com ícone aparece */
+.vit-capa { position: relative; overflow: hidden; }
+.vit-capa img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }

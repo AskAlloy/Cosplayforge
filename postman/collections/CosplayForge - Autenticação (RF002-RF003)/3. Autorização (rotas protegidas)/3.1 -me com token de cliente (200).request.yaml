@@ -1,0 +1,13 @@
+$kind: http-request
+name: 3.1 /me com token de cliente (200)
+url: "{{baseUrl}}/api/usuarios/me"
+method: GET
+headers:
+  Authorization: Bearer {{tokenCliente}}
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status 200', () => pm.response.to.have.status(200));
+      pm.test('É o próprio usuário', () => pm.expect(pm.response.json().perfil).to.eql('CLIENTE'));
+    language: text/javascript
+order: 1000

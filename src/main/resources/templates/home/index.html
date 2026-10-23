@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CosplayForge - Painel de testes</title>
+<style>
+:root{color-scheme:light dark;--bg:#f6f7f9;--card:#fff;--tx:#1b1f24;--mut:#667085;--bd:#d7dbe0;--pri:#6d3fd1;--ok:#1a7f37;--warn:#9a6700;--err:#cf222e}
+@media(prefers-color-scheme:dark){:root{--bg:#14161a;--card:#1e2127;--tx:#e8eaed;--mut:#9aa3af;--bd:#343a42;--pri:#a68bf0;--ok:#4cc26a;--warn:#e3b341;--err:#ff7b72}}
+*{box-sizing:border-box}
+body{margin:0;font:14px/1.45 system-ui,sans-serif;background:var(--bg);color:var(--tx)}
+header{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;background:var(--card);border-bottom:1px solid var(--bd)}
+h1{font-size:17px;margin:0;color:var(--pri)}
+nav{display:flex;gap:6px;flex-wrap:wrap;padding:12px 16px;max-width:1100px;margin:auto}
+main{padding:0 16px 24px;max-width:1100px;margin:auto}
+section{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:14px;margin-bottom:12px}
+h2{font-size:15px;margin:0 0 8px}
+h3{font-size:13px;margin:0 0 8px}
+button{font:inherit;cursor:pointer;padding:5px 10px;border:1px solid var(--bd);border-radius:6px;background:var(--card);color:var(--tx);margin:2px}
+button:hover,nav .on{border-color:var(--pri);color:var(--pri)}
+button.pri{background:var(--pri);border-color:var(--pri);color:#fff}
+label{display:block;font-size:12px;color:var(--mut);margin-bottom:8px}
+input,select{display:block;width:100%;margin-top:3px;padding:6px 8px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--tx);font:inherit}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));column-gap:12px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--bd);white-space:nowrap}
+th{font-size:12px;color:var(--mut)}
+.mut{color:var(--mut);font-size:12px}
+.erro{color:var(--err);font-size:13px;min-height:18px}
+.s2{color:var(--ok)}.s4{color:var(--warn)}.s5{color:var(--err)}
+pre{margin:6px 0 0;padding:10px;background:var(--bg);border:1px solid var(--bd);border-radius:6px;max-height:260px;overflow:auto;white-space:pre-wrap;word-break:break-word;font-size:12px}
+summary{cursor:pointer;font-weight:600}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <h1>CosplayForge · Painel de testes</h1>
+  <div><span id="quem" class="mut">Visitante</span> <button id="sair" hidden>Sair</button></div>
+</header>
+
+<nav>
+  <button data-k="conta">Conta (cadastro / login)</button>
+  <button data-k="categorias">Categorias</button>
+  <button data-k="enderecos">Endereços</button>
+  <button data-k="loja">Minha loja</button>
+  <button data-k="lojas">Lojas (admin)</button>
+  <button data-k="usuarios">Usuários (admin)</button>
+</nav>
+
+<main>
+  <!-- ===== Conta ===== -->
+  <div id="conta" hidden>
+    <div class="grid">
+      <section>
+        
+        <h2>1. Cadastro</h2>
+        <form id="fCad">
+          <label>Nome<input name="nome" required></label>
+          <label>Nome de usuário<input name="nomeUsuario" required></label>
+          <label>E-mail<input name="email" type="email" required></label>
+          <label>CPF (11 dígitos)<input name="cpf" required></label>
+          <label>Telefone<input name="telefone"></label>
+          <label>Senha (8+ com letra e número)<input name="senha" type="password" required></label>
+          <label>Confirmar senha<input name="confirmarSenha" type="password" required></label>
+          <label>Perfil<select name="perfil"><option>CLIENTE</option><option>VENDEDOR</option></select></label>
+          <button class="pri">Cadastrar</button>
+          <div class="erro" id="m1"></div>
+        </form>
+      </section>
+
+      <section>
+        <h2>2. Confirmar e-mail</h2>
+        <p class="mut">O e-mail é simulado: copie o link que aparece no <b>console do servidor</b> (ou só o token) e cole aqui.</p>
+        <form id="fConf">
+          <label>Link ou token<input id="tk" required></label>
+          <button class="pri">Confirmar</button>
+          <div class="erro" id="m2"></div>
+        </form>
+      </section>
+
+      <section>
+        <h2>3. Login</h2>
+        <p class="mut">Administrador padrão: admin@cosplayforge.local / admin123</p>
+        <form id="fLog">
+          <label>E-mail ou usuário<input name="login" required></label>
+          <label>Senha<input name="senha" type="password" required></label>
+          <button class="pri">Entrar</button>
+          <div class="erro" id="m3"></div>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <!-- ===== Recurso genérico (lista + formulário) ===== -->
+  <div id="rec" hidden>
+    <section>
+      <h2 id="tit"></h2>
+      <p class="mut" id="nota"></p>
+      <button id="atualizar">Atualizar lista</button>
+      <div class="erro" id="msg"></div>
+      <div class="scroll"><table id="tab"></table></div>
+    </section>
+    <section id="formbox">
+      <h3 id="ftit">Formulário</h3>
+      <form id="form"></form>
+    </section>
+  </div>
+
+  <!-- ===== Resposta da API ===== -->
+  <section>
+    <details open>
+      <summary>Última resposta da API</summary>
+      <div id="st" class="mut">Nenhuma chamada ainda.</div>
+      <pre id="out"></pre>
+    </details>
+  </section>
+</main>
+
+<script th:inline="none">
+const $ = s => document.querySelector(s);
+let token = sessionStorage.getItem('t');
+let user = JSON.parse(sessionStorage.getItem('u') || 'null');
+
+/* ---------- Chamada à API (adiciona o JWT e mostra a resposta) ---------- */
+async function api(metodo, url, corpo) {
+  const h = {};
+  if (corpo) h['Content-Type'] = 'application/json';
+  if (token) h.Authorization = 'Bearer ' + token;
+  const t0 = performance.now();
+  let r, dados;
+  try {
+    r = await fetch(url, { method: metodo, headers: h, body: corpo ? JSON.stringify(corpo) : undefined });
+    const tx = await r.text();
+    try { dados = JSON.parse(tx); } catch { dados = tx; }
+  } catch (e) {
+    dados = { mensagem: 'Servidor inacessível: ' + e.message };
+    r = { ok: false, status: 0 };
+  }
+  const ms = Math.round(performance.now() - t0);
+  $('#st').textContent = `${metodo} ${url} → ${r.status} (${ms} ms)`;
+  $('#st').className = 's' + String(r.status)[0];
+  $('#out').textContent = typeof dados === 'string' ? dados : JSON.stringify(dados, null, 2);
+  return { ok: r.ok, status: r.status, data: dados };
+}
+const texto = r => r.data && r.data.mensagem
+  ? r.data.mensagem + (r.data.detalhes && r.data.detalhes.length ? ' — ' + r.data.detalhes.join('; ') : '')
+  : 'Erro ' + r.status;
+
+/* ---------- Cabeçalho / sessão ---------- */
+function cabecalho() {
+  $('#quem').textContent = user ? `${user.nome} (${user.perfil})` : 'Visitante';
+  $('#sair').hidden = !user;
+}
+$('#sair').onclick = () => { token = user = null; sessionStorage.clear(); cabecalho(); abrir('conta'); };
+
+/* ---------- Conta ---------- */
+$('#fCad').onsubmit = async e => {
+  e.preventDefault();
+  const r = await api('POST', '/api/auth/cadastro', Object.fromEntries(new FormData(e.target)));
+  $('#m1').textContent = r.ok ? 'Cadastro feito! Pegue o link no console do servidor e confirme no passo 2.' : texto(r);
+};
+$('#fConf').onsubmit = async e => {
+  e.preventDefault();
+  const v = $('#tk').value.trim(), m = v.match(/token=([\w-]+)/);
+  const r = await api('GET', '/api/auth/confirmar-email?token=' + encodeURIComponent(m ? m[1] : v));
+  $('#m2').textContent = r.ok ? r.data.mensagem : texto(r);
+};
+$('#fLog').onsubmit = async e => {
+  e.preventDefault();
+  const r = await api('POST', '/api/auth/login', Object.fromEntries(new FormData(e.target)));
+  if (r.ok) {
+    token = r.data.token; user = r.data.usuario;
+    sessionStorage.setItem('t', token); sessionStorage.setItem('u', JSON.stringify(user));
+    cabecalho(); $('#m3').textContent = '';
+  } else $('#m3').textContent = texto(r);
+};
+
+/* ---------- Recursos: o que cada tela lista, edita e quais ações tem ---------- */
+// cols = colunas da tabela | f = campos do formulário [nome, rótulo] (nome com ponto = objeto aninhado)
+// base = URL de escrita | del = permite excluir | unico = o usuário só tem um registro
+// acoes = botões por linha, cada um devolve [método, url, corpo]
+const st = (r, s) => ['PUT', '/api/admin/lojas/' + r.id + '/status', { status: s }];
+const RES = {
+  categorias: {
+    t: 'Categorias', list: '/api/categorias', base: '/api/admin/categorias', del: 1,
+    nota: 'Qualquer um lista. Criar, editar e excluir exige login como ADMINISTRADOR.',
+    cols: ['id', 'nome', 'descricao'],
+    f: [['nome', 'Nome'], ['descricao', 'Descrição']]
+  },
+  enderecos: {
+    t: 'Meus endereços', list: '/api/enderecos', base: '/api/enderecos', del: 1,
+    nota: 'Informe só CEP e número: logradouro, bairro, cidade e UF vêm do ViaCEP (precisa de internet).',
+    cols: ['id', 'cep', 'logradouro', 'numero', 'bairro', 'cidade', 'uf'],
+    f: [['cep', 'CEP (ex.: 01310-100)'], ['numero', 'Número'], ['complemento', 'Complemento'],
+        ['logradouro', 'Logradouro (só se o CEP não trouxer)'], ['bairro', 'Bairro (idem)']]
+  },
+  loja: {
+    t: 'Minha loja (VENDEDOR)', list: '/api/vendedor/loja', base: '/api/vendedor/loja', unico: 1,
+    nota: 'Cada vendedor tem uma loja. Ela nasce EM_ANALISE e só vende depois que o admin ativar.',
+    cols: ['id', 'nome', 'cnpj', 'status', 'endereco.cidade'],
+    f: [['nome', 'Nome da loja'], ['descricao', 'Descrição'], ['cnpj', 'CNPJ (14 dígitos, opcional)'],
+        ['emailContato', 'E-mail de contato'], ['telefone', 'Telefone'],
+        ['endereco.cep', 'CEP'], ['endereco.numero', 'Número'], ['endereco.complemento', 'Complemento']]
+  },
+  lojas: {
+    t: 'Lojas (ADMIN)', list: '/api/admin/lojas',
+    nota: 'Aprove, suspenda ou cancele lojas. Transições inválidas são recusadas pela API (422).',
+    cols: ['id', 'nome', 'cnpj', 'status', 'proprietarioNome'],
+    acoes: [['Ativar', r => st(r, 'ATIVA')], ['Suspender', r => st(r, 'SUSPENSA')], ['Cancelar', r => st(r, 'CANCELADA')]]
+  },
+  usuarios: {
+    t: 'Usuários (ADMIN)', list: '/api/admin/usuarios',
+    nota: 'Inativar é bloqueado se o usuário tiver pedido em andamento ou for o último administrador.',
+    cols: ['id', 'nome', 'email', 'perfil', 'emailConfirmado', 'inativo'],
+    acoes: [['Inativar', r => ['DELETE', '/api/admin/usuarios/' + r.id]],
+            ['Reativar', r => ['POST', '/api/admin/usuarios/' + r.id + '/reativar']]]
+  }
+};
+
+/* ---------- Motor genérico ---------- */
+let cur = null, rows = [], editId = null;
+const get = (o, p) => p.split('.').reduce((x, k) => (x == null ? x : x[k]), o);
+const put = (o, p, v) => { const ks = p.split('.'); ks.slice(0, -1).forEach(k => { o = o[k] = o[k] || {}; }); o[ks[ks.length - 1]] = v; };
+const msg = t => { $('#msg').textContent = t || ''; };
+
+async function abrir(k) {
+  cur = k; editId = null;
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.k === k));
+  $('#conta').hidden = k !== 'conta';
+  $('#rec').hidden = k === 'conta';
+  if (k === 'conta') return;
+  const c = RES[k];
+  $('#tit').textContent = c.t; $('#nota').textContent = c.nota;
+  montarForm(c);
+  await carregar();
+}
+
+function montarForm(c) {
+  const f = $('#form'); f.replaceChildren();
+  $('#formbox').hidden = !c.f;
+  (c.f || []).forEach(([nome, rotulo]) => {
+    const lb = document.createElement('label'), i = document.createElement('input');
+    lb.textContent = rotulo; i.name = nome; lb.append(i); f.append(lb);
+  });
+  const b = document.createElement('button'); b.className = 'pri'; b.textContent = 'Salvar'; f.append(b);
+  const n = document.createElement('button'); n.type = 'button'; n.textContent = 'Limpar'; n.onclick = () => { editId = null; f.reset(); $('#ftit').textContent = 'Novo registro'; }; f.append(n);
+  $('#ftit').textContent = c.unico ? 'Cadastrar / editar' : 'Novo registro';
+}
+
+async function carregar() {
+  const c = RES[cur], r = await api('GET', c.list);
+  rows = r.ok ? (Array.isArray(r.data) ? r.data : [r.data]) : [];
+  msg(r.ok ? '' : texto(r));
+  tabela();
+  if (c.unico && rows.length) editar(rows[0]);
+}
+
+function tabela() {
+  const c = RES[cur], t = $('#tab'); t.replaceChildren();
+  const h = t.insertRow();
+  [...c.cols, 'ações'].forEach(x => { const th = document.createElement('th'); th.textContent = x; h.append(th); });
+  rows.forEach(r => {
+    const tr = t.insertRow();
+    c.cols.forEach(k => { tr.insertCell().textContent = String(get(r, k) ?? ''); });
+    const td = tr.insertCell();
+    const add = (rotulo, fn) => { const b = document.createElement('button'); b.textContent = rotulo; b.onclick = fn; td.append(b); };
+    if (c.f && !c.unico) add('Editar', () => editar(r));
+    if (c.del) add('Excluir', () => acao('DELETE', c.base + '/' + r.id, null, 'Excluir o registro #' + r.id + '?'));
+    (c.acoes || []).forEach(([rotulo, fn]) => add(rotulo, () => acao(...fn(r))));
+  });
+  if (!rows.length) { const td = t.insertRow().insertCell(); td.colSpan = c.cols.length + 1; td.textContent = 'Nenhum registro.'; }
+}
+
+function editar(r) {
+  editId = r.id; $('#ftit').textContent = 'Editando #' + r.id;
+  [...$('#form').elements].filter(i => i.name).forEach(i => { i.value = get(r, i.name) ?? ''; });
+}
+
+async function acao(metodo, url, corpo, confirmar) {
+  if (confirmar && !confirm(confirmar)) return;
+  const r = await api(metodo, url, corpo);
+  if (r.ok) await carregar(); else msg(texto(r));
+}
+
+$('#form').onsubmit = async e => {
+  e.preventDefault();
+  const c = RES[cur], corpo = {};
+  [...e.target.elements].filter(i => i.name).forEach(i => put(corpo, i.name, i.value));
+  const existe = c.unico ? rows.length > 0 : editId != null;
+  const url = c.unico || editId == null ? c.base : c.base + '/' + editId;
+  const r = await api(existe ? 'PUT' : 'POST', url, corpo);
+  if (r.ok) { editId = null; e.target.reset(); await carregar(); } else msg(texto(r));
+};
+$('#atualizar').onclick = carregar;
+document.querySelectorAll('nav button').forEach(b => { b.onclick = () => abrir(b.dataset.k); });
+
+cabecalho();
+abrir('conta');
+</script>
+</body>
+</html>

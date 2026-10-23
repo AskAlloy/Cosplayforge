@@ -1,0 +1,80 @@
+/* Base visual do CosplayForge: cores, tipografia e componentes comuns.
+   Tema claro; as cores ficam em variáveis para trocar tudo num lugar só. */
+:root {
+    --cf-bg: #F4F5FB;
+    --cf-surface: #FFFFFF;
+    --cf-ink: #1E2142;
+    --cf-muted: #666B8F;
+    --cf-line: #E3E5F2;
+
+    --cf-primary: #5B54D6;
+    --cf-primary-dark: #4A44C0;
+    --cf-primary-soft: #E9E8FB;
+    --cf-teal: #14937A;
+    --cf-teal-soft: #DDF4EE;
+    --cf-amber: #B9780F;
+    --cf-amber-soft: #FFF1D6;
+    --cf-rose: #C8435F;
+    --cf-rose-soft: #FCE4EA;
+    --cf-sky: #2F6FC4;
+    --cf-sky-soft: #E2EEFC;
+
+    --bs-body-bg: var(--cf-bg);
+    --bs-body-color: var(--cf-ink);
+    --bs-body-font-family: "Nunito Sans", system-ui, sans-serif;
+    --bs-primary: var(--cf-primary);
+    --bs-primary-rgb: 91, 84, 214;
+    --bs-link-color: var(--cf-primary);
+    --bs-link-hover-color: var(--cf-primary-dark);
+    --bs-border-color: var(--cf-line);
+}
+
+h1, h2, h3, h4, h5, .cf-marca { font-family: "Outfit", sans-serif; font-weight: 600; letter-spacing: -0.01em; }
+.text-muted, .form-text { color: var(--cf-muted) !important; }
+
+/* Botões e campos */
+.btn { border-radius: 10px; font-weight: 600; }
+.btn-primary {
+    --bs-btn-bg: var(--cf-primary); --bs-btn-border-color: var(--cf-primary);
+    --bs-btn-hover-bg: var(--cf-primary-dark); --bs-btn-hover-border-color: var(--cf-primary-dark);
+    --bs-btn-active-bg: var(--cf-primary-dark); --bs-btn-active-border-color: var(--cf-primary-dark);
+    --bs-btn-disabled-bg: var(--cf-primary); --bs-btn-disabled-border-color: var(--cf-primary);
+}
+.btn-outline-primary {
+    --bs-btn-color: var(--cf-primary); --bs-btn-border-color: var(--cf-primary);
+    --bs-btn-hover-bg: var(--cf-primary); --bs-btn-hover-border-color: var(--cf-primary);
+    --bs-btn-active-bg: var(--cf-primary); --bs-btn-active-border-color: var(--cf-primary);
+}
+.form-control, .form-select { border-radius: 10px; border-color: #D5D8EA; padding: .6rem .85rem; }
+.form-control:focus, .form-select:focus, .btn:focus-visible, a:focus-visible {
+    border-color: var(--cf-primary);
+    box-shadow: 0 0 0 .22rem rgba(91, 84, 214, .22);
+    outline: none;
+}
+.form-label { font-weight: 600; font-size: .9rem; }
+
+/* Cartões e tabelas */
+.cf-card { background: var(--cf-surface); border: 1px solid var(--cf-line); border-radius: 16px; }
+.cf-card-corpo { padding: 1.25rem 1.4rem; }
+.cf-tabela { --bs-table-bg: transparent; margin: 0; }
+.cf-tabela th { font-size: .82rem; color: var(--cf-muted); font-weight: 700; border-bottom-color: var(--cf-line); white-space: nowrap; }
+.cf-tabela td { vertical-align: middle; border-color: var(--cf-line); }
+.cf-vazio { text-align: center; color: var(--cf-muted); padding: 2.2rem 1rem; }
+.cf-vazio i { font-size: 1.8rem; display: block; margin-bottom: .4rem; color: #A9ADD0; }
+
+/* Selos de status (cores por significado, sempre com texto) */
+.cf-selo { display: inline-block; padding: .22rem .65rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+.cf-selo.verde { background: var(--cf-teal-soft);  color: var(--cf-teal); }
+.cf-selo.ambar { background: var(--cf-amber-soft); color: var(--cf-amber); }
+.cf-selo.rosa  { background: var(--cf-rose-soft);  color: var(--cf-rose); }
+.cf-selo.azul  { background: var(--cf-sky-soft);   color: var(--cf-sky); }
+.cf-selo.roxo  { background: var(--cf-primary-soft); color: var(--cf-primary-dark); }
+.cf-selo.cinza { background: #ECEEF6; color: #565B7C; }
+
+/* Marca */
+.cf-marca { display: inline-flex; align-items: center; gap: .55rem; font-size: 1.25rem; color: var(--cf-ink); text-decoration: none; }
+.cf-marca-icone { width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; background: var(--cf-primary); color: #fff; font-size: 1.1rem; }
+
+.toast { border-radius: 12px; border: 1px solid var(--cf-line); }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

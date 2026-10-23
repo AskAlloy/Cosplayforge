@@ -1,0 +1,24 @@
+$kind: http-request
+url: "{{baseUrl}}/api/auth/cadastro"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "nome": "",
+      "nomeUsuario": "a@b",
+      "email": "invalido",
+      "cpf": "123",
+      "senha": "123",
+      "confirmarSenha": "",
+      "perfil": "CLIENTE"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status 400', () => pm.response.to.have.status(400));
+      pm.test('Lista os campos com erro', () => pm.expect(pm.response.json().detalhes.length).to.be.above(0));
+    language: text/javascript
+order: 3000

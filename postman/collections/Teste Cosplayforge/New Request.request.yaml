@@ -1,0 +1,25 @@
+$kind: http-request
+url: "{{base_url}}/api/auth/cadastro"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"nome\": \"Joaquim Pedro\",\r
+
+    \  \"nomeUsuario\": \"Jocape\",\r
+
+    \  \"email\": \"Jocape@teste.com\",\r
+
+    \  \"telefone\":\"(55)98765-4321\",\r
+
+    \  \"cpf\": \"98765432100\",\r
+
+    \  \"senha\": \"Senha123\",\r
+
+    \  \"confirmarSenha\": \"Senha123\",\r
+
+    \  \"perfil\": \"VENDEDOR\"\r
+
+    }"
+order: 1000

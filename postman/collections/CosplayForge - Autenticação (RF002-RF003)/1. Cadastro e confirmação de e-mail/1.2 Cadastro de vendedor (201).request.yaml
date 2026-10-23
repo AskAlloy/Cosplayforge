@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{baseUrl}}/api/auth/cadastro"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "nome": "João Vendedor",
+      "nomeUsuario": "vendedorCleber",
+      "email": "vendedor@teste.com",
+      "cpf": "{{cpfVendedor}}",
+      "telefone": "64912345678",
+      "senha": "{{senhaPadrao}}",
+      "confirmarSenha": "{{senhaPadrao}}",
+      "perfil": "VENDEDOR"
+    }
+scripts:
+  - type: afterResponse
+    code: pm.test('Status 201', () => pm.response.to.have.status(201));
+    language: text/javascript
+order: 2000

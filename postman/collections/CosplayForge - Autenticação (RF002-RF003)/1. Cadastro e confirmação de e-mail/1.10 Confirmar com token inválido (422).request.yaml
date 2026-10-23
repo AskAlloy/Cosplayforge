@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{baseUrl}}/api/auth/confirmar-email?token=token-que-nao-existe"
+method: GET
+queryParams:
+  token: token-que-nao-existe
+scripts:
+  - type: afterResponse
+    code: pm.test('Status 422', () => pm.response.to.have.status(422));
+    language: text/javascript
+order: 10000

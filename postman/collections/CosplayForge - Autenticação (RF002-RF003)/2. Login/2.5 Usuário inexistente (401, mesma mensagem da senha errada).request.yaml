@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{baseUrl}}/api/auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "login": "ninguem{{sufixo}}",
+      "senha": "{{senhaPadrao}}"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status 401', () => pm.response.to.have.status(401));
+      pm.test('Mensagem genérica', () => pm.expect(pm.response.json().mensagem).to.eql('Credenciais inválidas.'));
+    language: text/javascript
+order: 5000

@@ -1,0 +1,13 @@
+# Use this workspace to collaborate
+workspace:
+  id: 5a2cefeb-9729-4792-86d6-9d221326fd58
+
+cloudResources:
+  collections:
+    ../postman/collections/CosplayForge - Autenticação (RF002-RF003): c70aeaf5-0f36-4e74-ac88-6f451c31807d
+
+# All resources in the `postman/` folder are automatically registered in Local View.
+# Point to additional files outside the `postman/` folder to register them individually. Example:
+#localResources:
+#  collections:
+#    - ../tests/E2E Test Collection/

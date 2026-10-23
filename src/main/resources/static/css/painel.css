@@ -1,0 +1,40 @@
+/* Estrutura dos painéis: menu lateral + conteúdo.
+   A cor de destaque do menu vem de --painel-destaque (definida em admin.css / vendedor.css). */
+:root { --painel-destaque: var(--cf-primary); --painel-destaque-suave: var(--cf-primary-soft); }
+
+.painel-shell { display: grid; grid-template-columns: 250px 1fr; min-height: 100vh; }
+
+.painel-lateral {
+    background: var(--cf-surface); border-right: 1px solid var(--cf-line);
+    padding: 1.4rem 1rem; display: flex; flex-direction: column; gap: 1.6rem;
+    position: sticky; top: 0; height: 100vh;
+}
+.painel-papel { font-size: .8rem; color: var(--cf-muted); margin: .35rem 0 0 .2rem; }
+.painel-menu { display: grid; gap: .25rem; }
+.painel-menu a {
+    display: flex; align-items: center; gap: .7rem; padding: .62rem .8rem; border-radius: 10px;
+    color: #4B5078; font-weight: 600; text-decoration: none; transition: background .15s;
+}
+.painel-menu a:hover { background: #F0F1F9; }
+.painel-menu a.ativo { background: var(--painel-destaque-suave); color: var(--painel-destaque); }
+.painel-rodape { margin-top: auto; border-top: 1px solid var(--cf-line); padding-top: 1rem; }
+.painel-rodape .nome { font-weight: 700; word-break: break-word; }
+
+.painel-principal { padding: 1.6rem clamp(1rem, 3vw, 2.4rem) 3rem; min-width: 0; }
+.painel-topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.4rem; gap: 1rem; flex-wrap: wrap; }
+.painel-topo h1 { font-size: 1.6rem; margin: 0; }
+
+/* Cartões de números do resumo */
+.cf-numero { display: flex; align-items: center; gap: 1rem; }
+.cf-numero .icone { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-size: 1.3rem; background: var(--painel-destaque-suave); color: var(--painel-destaque); }
+.cf-numero .valor { font-family: "Outfit", sans-serif; font-size: 1.7rem; font-weight: 600; line-height: 1.1; }
+.cf-numero .rotulo { color: var(--cf-muted); font-size: .88rem; }
+
+@media (max-width: 991px) {
+    .painel-shell { grid-template-columns: 1fr; }
+    .painel-lateral { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; gap: .8rem; padding: .8rem 1rem; }
+    .painel-papel { display: none; }
+    .painel-menu { display: flex; overflow-x: auto; order: 3; width: 100%; }
+    .painel-menu a { white-space: nowrap; }
+    .painel-rodape { margin: 0 0 0 auto; border: 0; padding: 0; display: flex; align-items: center; gap: .8rem; }
+}

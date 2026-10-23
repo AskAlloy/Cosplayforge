@@ -1,0 +1,5 @@
+/* Painel do vendedor: destaque índigo (cor principal da marca) */
+:root { --painel-destaque: var(--cf-primary); --painel-destaque-suave: var(--cf-primary-soft); }
+.loja-status { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+.estoque-campo { width: 84px; }
+.pedido-aviso { font-size: .85rem; color: var(--cf-muted); }

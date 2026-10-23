@@ -1,0 +1,37 @@
+$kind: http-request
+url: "{{baseUrl}}/api/auth/cadastro"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "nome": "Maria Cliente",
+      "nomeUsuario": "cliente{{sufixo}}",
+      "email": "cliente{{sufixo}}@teste.com",
+      "cpf": "{{cpfCliente}}",
+      "telefone": "61999999999",
+      "senha": "{{senhaPadrao}}",
+      "confirmarSenha": "{{senhaPadrao}}",
+      "perfil": "CLIENTE"
+    }
+scripts:
+  - type: beforeRequest
+    code: |-
+      const sufixo = Date.now().toString();
+      const cpf = () => String(Math.floor(Math.random() * 1e11)).padStart(11, '0');
+      pm.collectionVariables.set('sufixo', sufixo);
+      pm.collectionVariables.set('senhaPadrao', 'Senha123');
+      pm.collectionVariables.set('cpfCliente', cpf());
+      pm.collectionVariables.set('cpfVendedor', cpf());
+      pm.collectionVariables.set('cpfExtra', cpf());
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      pm.test('Status 201', () => pm.response.to.have.status(201));
+      const j = pm.response.json();
+      pm.test('Não expõe senha nem CPF', () => { pm.expect(j).to.not.have.property('senhaHash'); pm.expect(j).to.not.have.property('cpf'); });
+      pm.test('Conta nasce sem e-mail confirmado', () => pm.expect(j.emailConfirmado).to.eql(false));
+    language: text/javascript
+order: 1000

@@ -1,0 +1,17 @@
+$kind: collection
+name: CosplayForge - Autenticação (RF002/RF003)
+description: ""
+variables:
+  baseUrl: http://localhost:8080
+  adminEmail: admin@cosplayforge.local
+  adminSenha: admin123
+  tokenConfirmacaoCliente: ""
+  tokenConfirmacaoVendedor: ""
+  tokenInvalido: abc.def.ghi
+  sufixo: ""
+  senhaPadrao: ""
+  cpfCliente: ""
+  cpfVendedor: ""
+  cpfExtra: ""
+  tokenCliente: ""
+  tokenAdmin: ""
