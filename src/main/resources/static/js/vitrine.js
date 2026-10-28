@@ -6,24 +6,7 @@
     const TAMANHO = 12;
     const estado = { pagina: 0, totalPaginas: 1, total: 0, itens: [] };
     const modal = new bootstrap.Modal($('modalProduto'));
-
-    // ---------- Topo (conta) ----------
-    function desenharConta() {
-        const u = CF.usuario();
-        const area = $('areaConta');
-        if (!CF.token() || !u) {
-            area.innerHTML = `<a class="btn btn-sm btn-outline-primary" href="${CF.url('/login')}">Entrar</a>
-        <a class="btn btn-sm btn-primary" href="${CF.url('/cadastro')}">Criar conta</a>`;
-            return;
-        }
-        const painel = u.perfil === 'CLIENTE' ? '' :
-            `<a class="btn btn-sm btn-outline-primary" href="${CF.telaDoPerfil(u.perfil)}">Meu painel</a>`;
-        area.innerHTML = `<span class="small fw-semibold d-none d-sm-inline">${CF.esc(u.nome || u.email || '')}</span>${painel}
-      <button class="btn btn-sm btn-outline-secondary" id="btnSairVitrine">Sair</button>`;
-        $('btnSairVitrine').addEventListener('click', () => {
-            sessionStorage.removeItem('t'); sessionStorage.removeItem('u'); location.reload();
-        });
-    }
+    let produtoAtual = null;
 
     // ---------- Dados ----------
     // GET /api/produtos aceita: termo, categoriaId, precoMin, precoMax, page, size
@@ -92,6 +75,10 @@
         if (!card) return;
         const p = estado.itens.find((x) => String(x.id) === card.dataset.id);
         if (!p) return;
+        produtoAtual = p;
+        $('detQtd').value = 1;
+        $('btnAdicionar').disabled = !p.disponivel;
+        $('btnAdicionar').innerHTML = CF.token() ? '<i class="bi bi-bag-plus me-1"></i>Adicionar ao carrinho' : 'Entrar para comprar';
         $('detNome').textContent = p.nome;
         $('detDescricao').textContent = p.descricao || 'Sem descrição.';
         $('detLoja').textContent = p.lojaNome || 'Loja parceira';
@@ -105,12 +92,29 @@
         modal.show();
     });
 
+    // ---------- Adicionar ao carrinho ----------
+    $('detMenos').addEventListener('click', () => { $('detQtd').value = Math.max(1, Number($('detQtd').value) - 1); });
+    $('detMais').addEventListener('click', () => { $('detQtd').value = Number($('detQtd').value) + 1; });
+    $('btnAdicionar').addEventListener('click', async (ev) => {
+        if (!CF.token()) { location.href = CF.url('/login'); return; }
+        const quantidade = Number($('detQtd').value);
+        if (!Number.isInteger(quantidade) || quantidade < 1) return CF.toast('Informe uma quantidade de 1 ou mais.', 'erro');
+        await CF.comCarregando(ev.currentTarget, async () => {
+            try {
+                const carrinho = await CF.api(R.carrinho.itens, { metodo: 'POST', corpo: { produtoId: produtoAtual.id, quantidade } });
+                CF.toast('Produto adicionado ao carrinho.');
+                Cliente.atualizarContador(carrinho);
+                modal.hide();
+            } catch (e) { CF.erro(e); } // ex.: estoque insuficiente, ou o vendedor tentando comprar da própria loja
+        });
+    });
+
     // Busca com pequena espera para não chamar a API a cada tecla
     let espera;
     $('busca').addEventListener('input', () => { clearTimeout(espera); espera = setTimeout(() => { estado.pagina = 0; carregarProdutos(); }, 350); });
     $('categoria').addEventListener('change', () => { estado.pagina = 0; carregarProdutos(); });
 
-    desenharConta();
+    Cliente.desenharTopo();
     carregarCategorias();
     carregarProdutos();
 })();
