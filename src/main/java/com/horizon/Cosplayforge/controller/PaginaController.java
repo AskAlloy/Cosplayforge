@@ -13,8 +13,7 @@ public class PaginaController {
 
     @GetMapping("/")
     public String vitrine() {
-
-        return "home/vitrine";
+        return "vitrine";
     }
 
     @GetMapping("/login")
@@ -24,7 +23,6 @@ public class PaginaController {
 
     @GetMapping("/cadastro")
     public String cadastro() {
-
         return "cadastro";
     }
 
@@ -39,5 +37,18 @@ public class PaginaController {
         return "vendedor/painel";
     }
 
+    @GetMapping("/carrinho")
+    public String carrinho(){
+        return "carrinho";
+    }
 
+    @GetMapping("/pedidos")
+    public String pedidos(){
+        return "pedidos";
+    }
+
+    @GetMapping("/enderecos")
+    public String enderecos(){
+        return "enderecos";
+    }
 }
