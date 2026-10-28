@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('CosplayForge · Vitrine', 'vitrine')}"></head>
+<head th:replace="~{fragments/layout :: head('CosplayForge · Vitrine', 'vitrine,cliente')}"></head>
 <body>
 <div th:replace="~{fragments/layout :: toasts}"></div>
 
-<header class="vit-topo">
-    <div class="vit-container vit-topo-linha">
-        <a class="cf-marca" th:href="@{/static}"><span class="cf-marca-icone"><i class="bi bi-magic"></i></span>CosplayForge</a>
-        <div id="areaConta" class="d-flex align-items-center gap-2"></div>
-    </div>
-</header>
+<header th:replace="~{fragments/layout :: topoCliente}"></header>
 
 <section class="vit-hero">
     <div class="vit-container">
@@ -46,10 +41,19 @@
                 <div class="vit-preco fs-4" id="detPreco"></div>
             </div>
         </div>
+        <div class="modal-footer justify-content-between">
+            <div class="input-group" style="width:140px">
+                <button class="btn btn-outline-secondary" type="button" id="detMenos" aria-label="Diminuir quantidade">−</button>
+                <input id="detQtd" type="number" min="1" step="1" value="1" class="form-control text-center" aria-label="Quantidade">
+                <button class="btn btn-outline-secondary" type="button" id="detMais" aria-label="Aumentar quantidade">+</button>
+            </div>
+            <button class="btn btn-primary" type="button" id="btnAdicionar"><i class="bi bi-bag-plus me-1"></i>Adicionar ao carrinho</button>
+        </div>
     </div></div>
 </div>
 
 <th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script th:src="@{/js/cliente.js}"></script>
 <script th:src="@{/js/vitrine.js}"></script>
 </body>
 </html>
