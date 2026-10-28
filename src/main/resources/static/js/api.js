@@ -1,18 +1,25 @@
-/* api.js — código compartilhado por todas as telas.
-   Cuida de: sessão (token), chamadas à API, redirecionamento por perfil e pequenos utilitários.
-   Se algum endpoint da sua API tiver outro caminho, ajuste SÓ o objeto "rotas" abaixo. */
+
 const CF = (() => {
     const ctx = (document.querySelector('meta[name="ctx"]')?.content || '/').replace(/\/$/, '');
-    const CHAVE_TOKEN = 't';
+    const CHAVE_TOKEN = 't';   // mesmas chaves do index.html de testes: a sessão vale nas duas telas
     const CHAVE_USUARIO = 'u';
 
     // ---------- Rotas da API (ajuste aqui se precisar) ----------
     const rotas = {
         login: '/api/auth/login',
         cadastro: '/api/auth/cadastro',
-        confirmarEmail: '/api/auth/confirmar-email',
+        confirmarEmail: '/api/auth/confirmar-email', // GET ?token=
         categorias: '/api/categorias',     // leitura pública
-        produtos: '/api/produtos',         // vitrine: leitura pública, paginada
+        produtos: '/api/produtos',         // catálogo público, paginado
+        carrinho: {
+            ver: '/api/carrinho',                                   // GET / DELETE (limpar)
+            itens: '/api/carrinho/itens',                           // POST { produtoId, quantidade }
+            item: (produtoId) => `/api/carrinho/itens/${produtoId}`, // PUT { quantidade } / DELETE
+        },
+        pedidos: '/api/pedidos',                                  // GET lista / POST { enderecoId } (1 pedido por loja)
+        pedidoCancelar: (id) => `/api/pedidos/${id}/cancelar`,    // POST
+        enderecos: '/api/enderecos',
+        endereco: (id) => `/api/enderecos/${id}`,
         admin: {
             lojas: '/api/admin/lojas',
             lojaStatus: (id) => `/api/admin/lojas/${id}/status`,
@@ -27,7 +34,8 @@ const CF = (() => {
             loja: '/api/vendedor/loja',
             produtos: '/api/vendedor/produtos',
             produto: (id) => `/api/vendedor/produtos/${id}`,
-            estoque: (id) => `/api/vendedor/produtos/${id}/estoque`,
+            estoque: (id) => `/api/vendedor/produtos/${id}/estoque`,   // PUT { quantidade }
+            produtoStatus: (id) => `/api/vendedor/produtos/${id}/status`, // PUT { status: ATIVO | INATIVO }
             pedidos: '/api/vendedor/pedidos',
             pedidoStatus: (id) => `/api/vendedor/pedidos/${id}/status`,
         },
@@ -47,11 +55,11 @@ const CF = (() => {
         location.href = url('/login' + (expirada ? '?sessao=expirada' : ''));
     }
 
-    // Cada perfil tem a sua tela inicial. CLIENTE ainda não tem painel: vai para o index.html de testes.
+    // Cada perfil tem a sua tela inicial. O cliente não tem painel: usa a vitrine pública.
     function telaDoPerfil(perfil) {
         if (perfil === 'ADMINISTRADOR') return url('/admin/painel');
         if (perfil === 'VENDEDOR') return url('/vendedor/painel');
-        return url('/');                    // CLIENTE: vitrine (o /index.html não existe como arquivo estático)
+        return url('/');            // CLIENTE (e qualquer outro) vai para a vitrine
     }
 
     // ---------- Chamadas à API ----------
@@ -83,19 +91,14 @@ const CF = (() => {
         return dados;
     }
 
-    // A API devolve ou uma lista simples, ou uma página do projeto: PaginaResponse { conteudo, pagina, tamanho, total, totalPaginas }.
-    // (aceita também 'content', o nome padrão do Page do Spring)
-    const lista = (r) => Array.isArray(r) ? r : (r?.conteudo ?? r?.content ?? []);
-
-    // Normaliza uma resposta paginada para { itens, total, totalPaginas } (usado pela vitrine).
-    const pagina = (r) => {
-        const itens = lista(r);
-        return {
-            itens,
-            total: r?.total ?? r?.totalElements ?? itens.length,
-            totalPaginas: r?.totalPaginas ?? r?.totalPages ?? 1,
-        };
-    };
+    // A API devolve lista simples ou uma página (PaginaResponse). Aceita os nomes mais comuns dos campos.
+    const lista = (r) => Array.isArray(r) ? r : (r?.content ?? r?.conteudo ?? r?.itens ?? r?.items ?? []);
+    const pagina = (r) => ({
+        itens: lista(r),
+        totalPaginas: r?.totalPages ?? r?.totalPaginas ?? 1,
+        total: r?.totalElements ?? r?.totalElementos ?? r?.total ?? lista(r).length,
+        atual: r?.number ?? r?.pagina ?? r?.page ?? 0,
+    });
 
     // Garante que há login e que o perfil é o esperado; senão redireciona.
     // A API relê o perfil no banco a cada requisição, então um perfil defasado aqui só resulta em 403.
@@ -134,11 +137,13 @@ const CF = (() => {
         PENDENTE: 'Pendente', PAGO: 'Pago', EM_PRODUCAO: 'Em produção', PRONTO: 'Pronto', ENVIADO: 'Enviado',
         ENTREGUE: 'Entregue', CANCELADO: 'Cancelado',
         CLIENTE: 'Cliente', VENDEDOR: 'Vendedor', ADMINISTRADOR: 'Administrador',
+        ATIVO: 'Ativo', INATIVO: 'Inativo',
     };
     const CORES = {
         EM_ANALISE: 'ambar', ATIVA: 'verde', SUSPENSA: 'rosa', CANCELADA: 'cinza',
         PENDENTE: 'ambar', PAGO: 'azul', EM_PRODUCAO: 'roxo', PRONTO: 'azul', ENVIADO: 'roxo', ENTREGUE: 'verde', CANCELADO: 'cinza',
         CLIENTE: 'cinza', VENDEDOR: 'roxo', ADMINISTRADOR: 'verde',
+        ATIVO: 'verde', INATIVO: 'cinza',
     };
     const rotulo = (s) => ROTULOS[s] || String(s ?? '—').replace(/_/g, ' ');
     const selo = (s) => `<span class="cf-selo ${CORES[s] || 'cinza'}">${esc(rotulo(s))}</span>`;

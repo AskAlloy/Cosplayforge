@@ -46,8 +46,16 @@ public class SecurityConfig {
                        .requestMatchers("/error").permitAll()
                        .requestMatchers("/api/auth/**").permitAll()
                        .requestMatchers("/","/index.html","/favicon.ico").permitAll()
-                       .requestMatchers("/", "/login", "/cadastro", "/css/**", "/js/**", "/img/**",
-                               "/admin/painel", "/vendedor/painel", "/vitrine.html").permitAll()
+                       .requestMatchers(
+                               "/",
+                               "/login",
+                               "/cadastro",
+                               "/css/**",
+                               "/js/**",
+                               "/img/**",
+                               "/admin/painel", "/vendedor/painel", "/vitrine.html",
+                               "/carrinho","/pedidos","/enderecos"
+                       ).permitAll()
                        .requestMatchers("/home").permitAll()
                        .requestMatchers(HttpMethod.GET, "/api/produtos/**", "/api/categorias/**").permitAll()
 
@@ -66,8 +74,7 @@ public class SecurityConfig {
        return http.build();
    }
 
-   // Erros de segurança acontecem antes do Spring MVC, então o
-   // GlobalExceptionHandler não os alcança: o JSON é escrito aqui.
+   // o JSON de erro é escrito aqui.
 
    private void escreverErro(HttpServletResponse resposta, int status, String mensagem) throws IOException {
        resposta.setStatus(status);

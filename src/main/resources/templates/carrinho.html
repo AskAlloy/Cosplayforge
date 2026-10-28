@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Carrinho · CosplayForge', 'vitrine,cliente')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: toasts}"></div>
+<header th:replace="~{fragments/layout :: topoCliente}"></header>
+
+<main class="vit-container vit-principal">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h4 m-0">Carrinho</h1>
+        <button id="btnLimpar" class="btn btn-sm btn-outline-secondary d-none">Limpar carrinho</button>
+    </div>
+
+    <div class="cli-duas-colunas">
+        <div id="lojasCarrinho" aria-live="polite"></div>
+
+        <aside class="cf-card cf-card-corpo cli-resumo">
+            <h2 class="h5">Resumo</h2>
+            <div class="cli-linha"><span>Produtos</span><strong id="resTotal">R$ 0,00</strong></div>
+            <div class="cli-linha text-muted small"><span>Frete</span><span>A definir</span></div>
+            <hr>
+            <label for="selEndereco" class="form-label">Endereço de entrega</label>
+            <select id="selEndereco" class="form-select mb-2"></select>
+            <a th:href="@{/enderecos}" class="small">Gerenciar endereços</a>
+            <div id="avisoResumo" class="alert alert-warning small mt-3 mb-0 d-none"></div>
+            <button id="btnFinalizar" class="btn btn-primary w-100 mt-3">Finalizar pedido</button>
+            <p class="text-muted small mt-2 mb-0">Será criado um pedido para cada loja do carrinho.</p>
+        </aside>
+    </div>
+</main>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script th:src="@{/js/cliente.js}"></script>
+<script th:src="@{/js/carrinho.js}"></script>
+</body>
+</html>

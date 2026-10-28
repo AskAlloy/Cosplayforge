@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Meus endereços · CosplayForge', 'vitrine,cliente')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: toasts}"></div>
+<header th:replace="~{fragments/layout :: topoCliente}"></header>
+
+<main class="vit-container vit-principal">
+    <h1 class="h4 mb-3">Meus endereços</h1>
+    <div class="row g-4">
+        <div class="col-lg-7"><div class="cf-card" id="listaEnderecos"></div></div>
+        <div class="col-lg-5">
+            <form id="formEndereco" class="cf-card cf-card-corpo" novalidate>
+                <h2 class="h5" id="tituloEndereco">Novo endereço</h2>
+
+                <p class="text-muted small">
+                    Informe só o CEP e o número: rua, bairro e cidade vêm do ViaCEP.
+                </p>
+                <input type="hidden" id="endId">
+
+                <div class="row g-3">
+
+                    <div class="col-6">
+                        <label class="form-label" for="endCep">CEP</label>
+                        <input id="endCep" class="form-control" inputmode="numeric" maxlength="9" placeholder="00000-000" required>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="form-label" for="endNumero">Número</label>
+                        <input id="endNumero" class="form-control" maxlength="20" required>
+                    </div>
+
+                    <div class="col-12"><label class="form-label" for="endComplemento">Complemento
+                        <span class="text-muted fw-normal">(opcional)</span></label>
+                        <input id="endComplemento" class="form-control" maxlength="100">
+                    </div>
+
+                    <div class="col-12"><label class="form-label" for="endLogradouro">Rua </label>
+                        <input id="endLogradouro" class="form-control" maxlength="150">
+                    </div>
+
+                    <div class="col-12"><label class="form-label" for="endBairro">Bairro </label>
+                        <input id="endBairro" class="form-control" maxlength="100">
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mt-4">
+                    <button class="btn btn-primary" type="submit">Salvar endereço</button>
+                    <button class="btn btn-outline-secondary d-none" type="button" id="endCancelar">Cancelar edição</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script th:src="@{/js/cliente.js}"></script>
+<script th:src="@{/js/enderecos.js}"></script>
+</body>
+</html>
