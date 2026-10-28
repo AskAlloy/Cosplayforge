@@ -1,3 +1,12 @@
-:root { --painel-destaque: var(--cf-teal); --painel-destaque-suave: var(--cf-teal-soft); }
-.painel-lateral .cf-marca-icone { background: var(--cf-teal); }
-.admin-busca { max-width: 320px; }
+:root {
+    --painel-destaque: var(--cf-teal);
+    --painel-destaque-suave: var(--cf-teal-soft);
+    }
+
+.painel-lateral .cf-marca-icone {
+    background: var(--cf-teal);
+    }
+
+.admin-busca {
+    max-width: 320px;
+    }
