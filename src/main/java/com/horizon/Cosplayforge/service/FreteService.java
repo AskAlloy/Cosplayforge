@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -66,7 +65,7 @@ public class FreteService {
 
     /*
      * Cotação de UMA loja (= um pedido), da mais barata para a mais cara.
-     * O PedidoService vai reutilizar este método para COBRAR o frete.
+     * O PedidoService vai reutilizar este method para COBRAR o frete.
      * Não abre transação própria: quem chama precisa estar numa (o produto e a loja são carregados sob demanda).
      */
     public List<SuperFreteOpcao> cotarLoja(Endereco destino, List<ItemCarrinho> daLoja) {
