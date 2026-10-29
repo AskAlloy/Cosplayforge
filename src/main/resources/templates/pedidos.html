@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/layout :: head('Pedidos · CosplayForge', 'vitrine,cliente')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: toasts}"></div>
+<header th:replace="~{fragments/layout :: topoCliente}"></header>
+
+<main class="vit-container vit-principal" style="max-width:880px">
+    <h1 class="h4 mb-3">Meus pedidos</h1>
+    <div id="avisoNovo" class="alert alert-success d-none" role="status"></div>
+    <div id="listaPedidos" aria-live="polite"></div>
+</main>
+
+
+
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script th:src="@{/js/cliente.js}"></script>
+<script th:src="@{/js/pedidos.js}"></script>
+
+</body>
+</html>
